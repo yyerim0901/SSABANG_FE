@@ -90,7 +90,7 @@ export default {
 
     },
     computed: {
-        ...mapGetters(['boardList'])
+        ...mapGetters(['boardList', 'searchOn'])
     },
     created() {
         this.$store.dispatch("getBoard");

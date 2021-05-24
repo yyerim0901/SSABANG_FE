@@ -10,6 +10,7 @@ import Board from "@/views/Board.vue";
 import BoardWrite from "@/views/BoardWrite.vue";
 import BoardDetail from "@/views/BoardDetail.vue";
 import BoardUpdate from "@/views/BoardUpdate.vue";
+import Word from "@/views/Word.vue";
 
 Vue.use(VueRouter);
 
@@ -58,6 +59,11 @@ const routes = [
     path: "/boardupdate",
     name: "BoardUpdate",
     component: BoardUpdate,
+  },
+  {
+    path: "/word",
+    name: "Word",
+    component: Word,
   },
 ];
 

@@ -15,6 +15,9 @@ export default new Vuex.Store({
     isLoginError: false,
     boards: [],
     board: {},
+    words: [],
+    word:{},
+    searchOn:false,
   },
   mutations: {
     //로그인이 성공했을 때
@@ -45,7 +48,14 @@ export default new Vuex.Store({
     addBoard(state, boardItem) {
       state.boards.push(boardItem);
     },
-
+    getWordList(state, payload) {
+      state.searchOn = false;
+      state.words = payload;
+    },
+    getWord(state, payload) {
+      state.searchOn = true;
+      state.word = payload;
+    }
 
   },
   actions: {
@@ -189,6 +199,20 @@ export default new Vuex.Store({
         commit("selectOne", boardItem);
       });
     },
+    getWords({ commit }) {
+      http.get("/word").then((resp) => {
+        console.log(resp.data)
+        commit("getWordList", resp.data);
+      });
+    },
+    // searchWord({ commit }, search) {
+    //   http
+    //     .get(`/word/${search}`)
+    //     .then(res => {
+    //       console.log(res.data)
+    //       commit("getWord", res.data);
+    //     })
+    // }
   },
   getters: {
     userInfo(state) {
@@ -202,6 +226,9 @@ export default new Vuex.Store({
     },
     getisLogin(state) {
       return state.isLogin;
-    }
+    },
+    getWordList(state) {
+      return state.words;
+    },
   }
 });
