@@ -7,7 +7,7 @@
                     <v-alert width="900px" class="mb-3" :value="isLoginError" dense outlined type="error">
                         아이디와 비밀번호를 확인해주세요.
                     </v-alert>
-                    <v-card width="900px">
+                    <v-card flat width="900px">
                         <v-toolbar flat height="60">
                             <v-toolbar-title>Login</v-toolbar-title>
                         </v-toolbar>
