@@ -1,17 +1,49 @@
 <template>
-    <div id="app">
-        <h3 v-if="!markerdatas">발견 한 매물이 없습니다. 다시 검색 해 주세요.</h3>
-        <h3 v-if="getHousedealState == 2 && markerdatas">
-        <span style="color: blue">{{ datasize }}</span> 개의 매물이 있습니다!
-        </h3>
-        <div id="map_wrap">
-        <div id="map" style="width: 100%; height: 600px"></div>
-        <div id="menu_wrap">
-            <ul id="placesList"></ul>
-            <div id="pagination"></div>
-        </div>
-        </div>
-    </div>
+  <v-app>
+    <v-container>
+      <v-layout>
+        <v-flex>
+          <v-sheet style="padding:30px;">
+                <v-alert
+                  v-model="alert"
+                  color="cyan"
+                  border="left"
+                  elevation="2"
+                  colored-border
+                  type="success"
+                  v-if="getHousedealState == 2 && markerdatas"
+                >
+                <strong>
+                  {{ datasize }} 개의 매물이 있습니다!
+                </strong>
+                </v-alert>
+                <v-alert
+                border="left"
+                colored-border
+                type="error"
+                elevation="2"
+                v-if="!markerdatas"
+              >
+              <strong>
+                발견 한 매물이 없습니다. 다시 검색 해 주세요.
+              </strong>
+              </v-alert>
+              <template>
+                <v-container id="map_wrap">
+                  <v-layout border="3px">
+                    <v-flex class="d-inline-flex" border="1px" id="map" style="width: 100%; height: 600px">얜뭐고</v-flex>
+                  </v-layout>
+                <v-flex v-if="getHousedealState == 2 && markerdatas" id="menu_wrap">
+                    <ul id="placesList"/>
+                    <div id="pagination"></div>
+                </v-flex>
+                </v-container>
+              </template>
+          </v-sheet>
+        </v-flex>
+      </v-layout>
+    </v-container>
+  </v-app>
 </template>
 
 <script>
@@ -191,10 +223,10 @@ export default {
       function getListItem(place, data, idx) {
         var el = document.createElement("li");
         var itemStr =
-          '<span class="markerbg marker_' +
+          '<span style="display:inline-block;" class="markerbg marker_' +
           ((idx % 15) + 1) +
           '"></span>' +
-          '<div class="info"><span class="apt_name">' +
+          '<div class="infoto"><span class="apt_name">' +
           place.getTitle() +
           "</span>";
         if (data.call_number.length == 8) {
@@ -334,16 +366,20 @@ export default {
   width: 100%;
   height: 600px;
 }
+.info {
+  background-color: white;
+  border-color: white;
+}
 
 #menu_wrap {
   position: absolute;
-  top: 150px;
-  left: 5px;
+  top: 135px;
+  left: 25px;
   bottom: 0;
   width: 300px;
   height: 580px;
-  margin: 10px 0 30px 10px;
-  padding: 5px;
+  margin: 0px 0px 0px 30px;
+  padding: 7px;
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.9);
   z-index: 1;
@@ -351,10 +387,12 @@ export default {
   border-radius: 10px;
 }
 #menu_wrap ul {
-  padding: 0;
+  list-style:none;
+  padding: 0px;
 }
 #placesList li {
   list-style: none;
+  padding: 0px;
 }
 #placesList .item {
   position: relative;
@@ -368,7 +406,7 @@ export default {
   margin-top: 4px;
 }
 #placesList .item h5,
-#placesList .item .info {
+#placesList .item .infoto {
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
@@ -388,22 +426,21 @@ export default {
   color: #777;
 }
 
-#placesList .info .apt_name {
+#placesList .infoto .apt_name {
   font-size: 15px;
   font-weight: bold;
 }
-#placesList .info .tel {
+#placesList .infoto .tel {
   color: #009900;
   font-size: 8px;
 }
-#placesList .info .load {
+#placesList .infoto .load {
   color: grey;
   font-size: 12px;
 }
 
 #placesList .item .markerbg {
-  float: left;
-  position: absolute;
+  float:left;
   width: 36px;
   height: 37px;
   margin: 10px 0 0 10px;

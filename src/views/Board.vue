@@ -14,13 +14,13 @@
                                 <th class="text-center">
                                     제목
                                 </th>
-                                <th class="text-center">
+                                <th width="10%" class="text-center">
                                     작성자
                                 </th>
-                                <th class="text-center">
+                                <th width="10%" class="text-center">
                                     조회수
                                 </th>
-                                <th width="10%" class="text-center">
+                                <th width="15%" class="text-center">
                                     작성시간
                                 </th>
                                 </tr>

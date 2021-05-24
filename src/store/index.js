@@ -59,12 +59,6 @@ export default new Vuex.Store({
       state.searchOn = true;
       state.word = payload;
     },
-    getHousedealList(state) {
-      return state.housedeals;
-    },
-    getHousedealState(state) {
-      return state.housedealstate;
-    },
     SET_INIT(state) {
       state.housedeals = [];
     },
@@ -240,7 +234,7 @@ export default new Vuex.Store({
     },
     searchAll({ commit }) {
       http
-        .get("/")
+        .get("house/")
         .then((resp) => {
           commit("SET_HOUSEDEAL_STATE", 1);
           commit("SET_HOUSEDEAL_ALL_LIST", resp.data);
@@ -251,7 +245,7 @@ export default new Vuex.Store({
     },
     searchZone({ commit }, zone) {
       http
-        .get("/zone/" + zone)
+        .get("house/zone/" + zone)
         .then((resp) => {
           commit("SET_HOUSEDEAL_STATE", 1);
           commit("SET_HOUSEDAEL_GU_LIST", resp.data);
@@ -276,6 +270,12 @@ export default new Vuex.Store({
     },
     getWordList(state) {
       return state.words;
+    },
+    getHousedealList(state) {
+      return state.housedeals;
+    },
+    getHousedealState(state) {
+      return state.housedealstate;
     },
   }
 });

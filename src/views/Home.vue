@@ -1,35 +1,64 @@
 <template>
-  <div>
     <v-container>
       <v-layout>
-        <v-flex  class="wrapper">
-          <v-sheet class="justify-center"  width="800px" height="150px" rounded="xl">
-            <v-text-field v-model="searchWord" style="padding:50px;">
-              <template v-slot:label>
-                찾으실 <strong>동</strong> 이나 <strong>구</strong>를 검색하세요 <v-icon style="vertical-align: middle">
-                  mdi-file-find
-                </v-icon>
-              </template>
+        <v-flex>
+          <v-sheet></v-sheet>
+        </v-flex>
+        <v-flex>
+          <v-sheet class="justify-center" width="800px" height="150px" rounded="xl">
+            <h4 v-if="searching == 1">데이터 로딩 중 입니다. 잠시만 기다려 주세요.</h4>
+            <v-text-field 
+            filled rounded dense 
+            @keyup.enter="map" 
+            v-model="searchWord" 
+            placeholder="찾으실 동 이나 구 를 검색하세요">
             </v-text-field>
           </v-sheet>
         </v-flex>
       </v-layout>
     </v-container>
-  </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 
 export default {
   name: "Home",
   data() {
     return {
       searchWord:'',
+      searching:0,
+      dialog : false,
     }
   },
   components: {
     
   },
+  methods: {
+    map(){
+      this.dialog = true;
+      this.searching = 1;
+      if (this.searchWord.trim().length == 0) {
+        this.$store.dispatch("searchAll");
+      } else {
+        this.$store.dispatch("searchZone", this.searchWord);
+      }
+      this.searchZone = "";
+    }
+  },
+  created() {
+    this.$store.dispatch("setinit");
+  },
+  computed: {
+    ...mapGetters(["getHousedealList", "getHousedealState"]),
+  },
+  watch:{
+    getHousedealState() {
+      if (this.getHousedealState == 2) {
+        this.$router.push("/map");
+      }
+    },
+  }
 };
 </script>
 

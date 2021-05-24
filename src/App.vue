@@ -2,23 +2,19 @@
   <div id="app">
       <v-app>
         <v-container>
-          <v-layout column>
-            <v-flex>
-              <div>
-                <v-card color="grey ligthen-4" flat>
-                  <v-toolbar flat>
+        <v-toolbar flat>
                     <v-btn
                     to="/board"
                     class="ma-1"
                     color="darkgrey"
                     plain
                   >
-                    공지사항
+                    <h3>공지사항</h3>
                   </v-btn>
-                  <v-menu flat offset-y>
-                    <template flat v-slot:activator="{ on, attrs }">
-                      <v-btn flat class="ma-1" color="darkgrey" v-bind="attrs" v-on="on" plain>
-                        etc
+                  <v-menu text offset-y>
+                    <template text v-slot:activator="{ on, attrs }">
+                      <v-btn text class="ma-1" color="darkgrey" v-bind="attrs" v-on="on" plain>
+                        <h3>etc</h3>
                       </v-btn>
                     </template>
                     <v-list>
@@ -36,7 +32,7 @@
                     color="darkgrey"
                     plain
                   >
-                    HOME
+                    <h3>HOME</h3>
                   </v-btn>
 
                     <v-btn
@@ -46,7 +42,7 @@
                     color="darkgrey"
                     plain
                   >
-                    로그인
+                    <h3>로그인</h3>
                   </v-btn>
 
                   <v-btn
@@ -56,7 +52,7 @@
                     color="darkgrey"
                     plain
                   >
-                    회원가입
+                    <h3>회원가입</h3>
                   </v-btn>
 
                   <v-btn
@@ -66,7 +62,7 @@
                     color="darkgrey"
                     plain
                   >
-                    마이페이지
+                    <h3>마이페이지</h3>
                   </v-btn> 
 
                   <v-btn
@@ -76,25 +72,15 @@
                     color="darkgrey"
                     plain
                   >
-                    로그아웃
+                    <h3>로그아웃</h3>
                   </v-btn>
-
-                    </v-toolbar>
-                  </v-card>
-              </div>
-            </v-flex>
-            <v-sheet id="hidden" height="50px">
-
-            </v-sheet>
-              <v-flex>
-                <div class="justify-center">
-                  <router-view></router-view>
-                </div>
-              </v-flex>
-          </v-layout>
+                </v-toolbar>
+                <v-flex class="text-center">
+                  <img height="280px;" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmsXDk%2Fbtq5HEjPhqy%2F2UKAKZ4E1ctie9Fwl3Dsuk%2Fimg.png" alt="">
+                </v-flex>
+                <router-view></router-view>
         </v-container>
       </v-app>
-      
   </div>
 </template>
 
@@ -123,11 +109,7 @@ export default {
 </script>
 
 <style>
-#app {
-  background: url('https://ohlaladani.com.br/wp-content/uploads/wallpaper-OHLALADANI_DESKTOP_WALLPAPERS_AVENTURA-2.jpg')
-    no-repeat center center fixed !important;
-  background-size: cover;
-}
+
 #hidden {
   background-color:rgba(250, 250, 250, 0);
 }
