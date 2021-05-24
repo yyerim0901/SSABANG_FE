@@ -15,6 +15,18 @@
                   >
                     공지사항
                   </v-btn>
+                  <v-menu flat offset-y>
+                    <template flat v-slot:activator="{ on, attrs }">
+                      <v-btn flat class="ma-1" color="darkgrey" v-bind="attrs" v-on="on" plain>
+                        etc
+                      </v-btn>
+                    </template>
+                    <v-list>
+                      <v-list-item to="/word">
+                        <v-list-item-title>용어집</v-list-item-title>
+                      </v-list-item>
+                    </v-list>
+                  </v-menu>
                     
                     <v-spacer></v-spacer>
 
