@@ -17,7 +17,10 @@ export default new Vuex.Store({
     board: {},
     words: [],
     word:{},
-    searchOn:false,
+    searchOn: false,
+    dialog:false,
+    housedealstate: 0, // 0 : 초기상태 , 1 : 데이터 로딩 중, 2 : 데이터 로딩 완료
+    housedeals: [],
   },
   mutations: {
     //로그인이 성공했을 때
@@ -55,7 +58,25 @@ export default new Vuex.Store({
     getWord(state, payload) {
       state.searchOn = true;
       state.word = payload;
-    }
+    },
+    getHousedealList(state) {
+      return state.housedeals;
+    },
+    getHousedealState(state) {
+      return state.housedealstate;
+    },
+    SET_INIT(state) {
+      state.housedeals = [];
+    },
+    SET_HOUSEDEAL_ALL_LIST(state, payload) {
+      state.housedeals = payload;
+    },
+    SET_HOUSEDAEL_GU_LIST(state, payload) {
+      state.housedeals = payload;
+    },
+    SET_HOUSEDEAL_STATE(state, payload) {
+      state.housedealstate = payload;
+    },
 
   },
   actions: {
@@ -212,7 +233,33 @@ export default new Vuex.Store({
     //       console.log(res.data)
     //       commit("getWord", res.data);
     //     })
-    // }
+    // },
+    setinit({ commit }) {
+      commit("SET_HOUSEDEAL_STATE", 0);
+      commit("SET_INIT");
+    },
+    searchAll({ commit }) {
+      http
+        .get("/")
+        .then((resp) => {
+          commit("SET_HOUSEDEAL_STATE", 1);
+          commit("SET_HOUSEDEAL_ALL_LIST", resp.data);
+        })
+        .then(() => {
+          commit("SET_HOUSEDEAL_STATE", 2);
+        });
+    },
+    searchZone({ commit }, zone) {
+      http
+        .get("/zone/" + zone)
+        .then((resp) => {
+          commit("SET_HOUSEDEAL_STATE", 1);
+          commit("SET_HOUSEDAEL_GU_LIST", resp.data);
+        })
+        .then(() => {
+          commit("SET_HOUSEDEAL_STATE", 2);
+        });
+    },
   },
   getters: {
     userInfo(state) {

@@ -11,6 +11,8 @@ import BoardWrite from "@/views/BoardWrite.vue";
 import BoardDetail from "@/views/BoardDetail.vue";
 import BoardUpdate from "@/views/BoardUpdate.vue";
 import Word from "@/views/Word.vue";
+import Search from "@/views/Search.vue";
+import Kakaomap from "@/views/Kakaomap.vue";
 
 Vue.use(VueRouter);
 
@@ -64,6 +66,16 @@ const routes = [
     path: "/word",
     name: "Word",
     component: Word,
+  },
+  {
+    path: "/map",
+    name: "kakaomap",
+    component: Kakaomap,
+  },
+  {
+    path: "/search",
+    name: "search",
+    component: Search,
   },
 ];
 
