@@ -3,6 +3,7 @@
         <v-layout>
             <v-flex>
                 <v-sheet id="map" style="width:500px;height:400px;"></v-sheet>
+                <v-btn @click="loadData">주변 공원</v-btn>
                 <v-btn @click="currentLocation">내 위치 확인하기</v-btn>
             </v-flex>
         </v-layout>
@@ -18,10 +19,17 @@ export default {
         return {
             lat:'',
             long:'',
+            parklist:'',
         }
     },
+    created() {
+        this.$store.dispatch("getParkList")
+    },
     computed: {
-        ...mapGetters(["getParkList"])
+        ...mapGetters(["getParkList"]),
+        parklist(){
+            console.log('data change');
+        }
     },
     methods:{
         currentLocation(){
@@ -93,6 +101,46 @@ export default {
                 // 지도 중심좌표를 접속위치로 변경합니다
                 map.setCenter(locPosition);      
             }    
+        },
+        loadData(){
+            this.$store.dispatch("getParkList");
+            this.parklist = this.parkList
+            console.log(this.$store.state.parkList)
+            console.log("store에 parkList : "+this.parkList)
+            console.log("여기 parklist : "+this.parklist)
+            // this.parkLocation()
+        },
+        parkLocation(){
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+                mapOption = { 
+                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
+                    level: 3 // 지도의 확대 레벨
+                };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+            
+            // 마커를 표시할 위치와 title 객체 배열입니다 
+            var positions = this.parklist;
+            console.log(positions)
+
+            // 마커 이미지의 이미지 주소입니다
+            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+                
+            for (var i = 0; i < positions.length; i ++) {
+                
+                // 마커 이미지의 이미지 크기 입니다
+                var imageSize = new kakao.maps.Size(24, 35); 
+                
+                // 마커 이미지를 생성합니다    
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+                
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    position: new kakao.maps.LatLng(positions.lat, positions.lng), // 마커를 표시할 위치
+                    title : data.parkname, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image : markerImage // 마커 이미지 
+                });
+            }
         }
     },
     created() {
