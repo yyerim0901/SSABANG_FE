@@ -55,6 +55,7 @@ export default {
       markerdatas: [],
       isFound: false,
       datasize: "",
+      dialog:false,
     };
   },
   mounted() {
@@ -166,10 +167,14 @@ export default {
           });
 
           kakao.maps.event.addListener(marker, "click", function () {
+            console.log("그냥 클릭")
             map.panTo(marker.getPosition());
           });
-          kakao.maps.event.addListener(marker, "doubleclick", function () {
+          kakao.maps.event.addListener(marker, "rightclick", function () {
             //dialog띄우기
+            console.log('right click! ');
+            this.dialog = true;
+  
           });
 
           kakao.maps.event.addListener(marker, "mouseout", function () {
