@@ -3,11 +3,11 @@
       <v-app>
         <v-container>
         <v-toolbar flat>
-                    <v-btn
-                    to="/board"
-                    class="ma-1"
-                    color="darkgrey"
-                    plain
+                  <v-btn
+                  to="/board"
+                  class="ma-1"
+                  color="darkgrey"
+                  plain
                   >
                     <h3>공지사항</h3>
                   </v-btn>
@@ -78,10 +78,16 @@
                     <h3>로그아웃</h3>
                   </v-btn>
                 </v-toolbar>
-                <v-flex id="img" @click="goHome" class="text-center">
-                  <img height="280px;" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmsXDk%2Fbtq5HEjPhqy%2F2UKAKZ4E1ctie9Fwl3Dsuk%2Fimg.png" alt=""/>
-                </v-flex>
-                <router-view></router-view>
+                <v-sheet style="background">
+                  <v-flex id="img" @click="goHome" class="text-center">
+                    <img height="280px;" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmsXDk%2Fbtq5HEjPhqy%2F2UKAKZ4E1ctie9Fwl3Dsuk%2Fimg.png" alt=""/>
+                  </v-flex>
+                  <router-view></router-view>
+                  <v-flex>
+                    <MARQUEE id="newsbar"></MARQUEE>
+                  </v-flex>
+
+                </v-sheet>
         </v-container>
       </v-app>
   </div>
@@ -106,10 +112,23 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getisLogin'])
+    ...mapGetters(['getisLogin', 'getNews'])
   },
   created() {
-    console.log(this.getisLogin)
+    // console.log(this.getisLogin)
+    this.$store.dispatch('getNews','공공주택').then(()=>{
+      console.log(this.getNews);
+      var newslistEl = document.getElementById("newsbar");
+      this.getNews.forEach((data, index)=>{
+        console.log(data.title);
+        var el = document.createElement("a");
+        el.style.textDecoration = "none";
+        el.href = data.link;
+        el.target = "_blank";
+        el.innerHTML = "< 뉴스 " + (index+1) + " : " + data.title + ">  ";
+        newslistEl.appendChild(el);
+      })
+    })
   },
 };
 </script>

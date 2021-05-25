@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import http from "@/util/http-commons.js";
 import router from "@/router/index.js";
+// import axios from 'axios';
 // import VueCookies from "vue-cookies";
 
 Vue.use(Vuex);
@@ -21,7 +22,8 @@ export default new Vuex.Store({
     dialog:false,
     housedealstate: 0, // 0 : 초기상태 , 1 : 데이터 로딩 중, 2 : 데이터 로딩 완료
     housedeals: [],
-    parkList:[],
+    parkList: [],
+    news:[]
   },
   mutations: {
     //로그인이 성공했을 때
@@ -74,8 +76,10 @@ export default new Vuex.Store({
     },
     SET_PARKLIST(state, payload) {
       state.parkList = payload;
+    },
+    SET_NEWS(state, payload) {
+      state.news = payload;
     }
-
   },
   actions: {
     //로그인 시도
@@ -277,6 +281,11 @@ export default new Vuex.Store({
         .then((resp) => {
           commit("SET_PARKLIST", resp.data)
         });
+    },
+    getNews({ commit }) {
+      return http.get("news/").then((resp) => {
+        commit("SET_NEWS", resp.data.items);
+      })
     }
   },
   getters: {
@@ -303,6 +312,9 @@ export default new Vuex.Store({
     },
     parkList(state) {
       return state.parkList;
+    },
+    getNews(state) {
+      return state.news;
     }
   }
 });
