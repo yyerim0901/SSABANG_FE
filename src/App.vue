@@ -75,8 +75,8 @@
                     <h3>로그아웃</h3>
                   </v-btn>
                 </v-toolbar>
-                <v-flex class="text-center">
-                  <img height="280px;" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmsXDk%2Fbtq5HEjPhqy%2F2UKAKZ4E1ctie9Fwl3Dsuk%2Fimg.png" alt="">
+                <v-flex id="img" @click="goHome" class="text-center">
+                  <img height="280px;" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmsXDk%2Fbtq5HEjPhqy%2F2UKAKZ4E1ctie9Fwl3Dsuk%2Fimg.png" alt=""/>
                 </v-flex>
                 <router-view></router-view>
         </v-container>
@@ -97,6 +97,9 @@ export default {
   methods: {
     logout(){
       this.$store.dispatch("logout")
+    },
+    goHome(){
+      this.$router.push("/")
     }
   },
   computed: {
@@ -109,7 +112,9 @@ export default {
 </script>
 
 <style>
-
+#img{
+  cursor : pointer;
+}
 #hidden {
   background-color:rgba(250, 250, 250, 0);
 }
