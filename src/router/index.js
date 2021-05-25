@@ -13,6 +13,7 @@ import BoardUpdate from "@/views/BoardUpdate.vue";
 import Word from "@/views/Word.vue";
 // import Search from "@/views/Search.vue";
 import Kakaomap from "@/views/Kakaomap.vue";
+import Park from "@/views/Park.vue";
 
 Vue.use(VueRouter);
 
@@ -71,6 +72,11 @@ const routes = [
     path: "/map",
     name: "kakaomap",
     component: Kakaomap,
+  },
+  {
+    path: "/park",
+    name: "Park",
+    component: Park,
   },
   // {
   //   path: "/search",

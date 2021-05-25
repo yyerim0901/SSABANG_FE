@@ -21,6 +21,7 @@ export default new Vuex.Store({
     dialog:false,
     housedealstate: 0, // 0 : 초기상태 , 1 : 데이터 로딩 중, 2 : 데이터 로딩 완료
     housedeals: [],
+    parkList:[],
   },
   mutations: {
     //로그인이 성공했을 때
@@ -71,6 +72,9 @@ export default new Vuex.Store({
     SET_HOUSEDEAL_STATE(state, payload) {
       state.housedealstate = payload;
     },
+    SET_PARKLIST(state, payload) {
+      state.parkList = payload;
+    }
 
   },
   actions: {
@@ -267,6 +271,13 @@ export default new Vuex.Store({
           commit("SET_HOUSEDEAL_STATE", 2);
         });
     },
+    getParkList({ commit }) {
+      http
+        .get("/park/list")
+        .then((resp) => {
+          commit("SET_PARKLIST", resp.data)
+        })
+    }
   },
   getters: {
     userInfo(state) {
@@ -290,5 +301,8 @@ export default new Vuex.Store({
     getHousedealState(state) {
       return state.housedealstate;
     },
+    getParkList(state) {
+      return state.parkList;
+    }
   }
 });

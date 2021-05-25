@@ -21,6 +21,9 @@
                       <v-list-item to="/word">
                         <v-list-item-title>용어집</v-list-item-title>
                       </v-list-item>
+                      <v-list-item to="/park">
+                        <v-list-item-title>놀이터</v-list-item-title>
+                      </v-list-item>
                     </v-list>
                   </v-menu>
                     
