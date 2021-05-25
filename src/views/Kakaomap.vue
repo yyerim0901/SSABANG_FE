@@ -168,6 +168,9 @@ export default {
           kakao.maps.event.addListener(marker, "click", function () {
             map.panTo(marker.getPosition());
           });
+          kakao.maps.event.addListener(marker, "doubleclick", function () {
+            //dialog띄우기
+          });
 
           kakao.maps.event.addListener(marker, "mouseout", function () {
             infowindow.close();

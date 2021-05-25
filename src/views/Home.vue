@@ -19,18 +19,23 @@
                 </v-col>
               </v-row>
             </v-flex>
-              <v-text-field
-              v-if="searching != 1"
-              id="searchField"
-              outlined
-              height="60px"
-              rounded dense
-              @keyup.enter="map" 
-              v-model="searchWord"
-              prepend-inner-icon="mdi-map-marker"
-              placeholder="  찾으실 동 이나 구 를 검색하세요">
-              </v-text-field>
-              <v-icon></v-icon>
+              <v-row>
+                <v-col v-if="searching != 1">
+                  <v-text-field
+                  id="searchField"
+                  outlined
+                  height="60px"
+                  rounded dense
+                  @keyup.enter="map" 
+                  v-model="searchWord"
+                  prepend-inner-icon="mdi-map-marker"
+                  placeholder="  찾으실 동 이나 구 를 검색하세요">
+                  </v-text-field>
+                </v-col>
+                <v-cols>
+                    <v-btn @click="map" outlined x-large style="margin-top:16px">검색</v-btn>
+                </v-cols>
+              </v-row>
           </v-sheet>
         </v-flex>
       </v-layout>
