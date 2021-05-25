@@ -23,7 +23,8 @@ export default new Vuex.Store({
     housedealstate: 0, // 0 : 초기상태 , 1 : 데이터 로딩 중, 2 : 데이터 로딩 완료
     housedeals: [],
     parkList: [],
-    news:[]
+    news: [],
+    hospitalList:[],
   },
   mutations: {
     //로그인이 성공했을 때
@@ -79,6 +80,9 @@ export default new Vuex.Store({
     },
     SET_NEWS(state, payload) {
       state.news = payload;
+    },
+    SET_HOSPITALLIST(state, payload) {
+      state.hospitalList = payload;
     }
   },
   actions: {
@@ -286,7 +290,14 @@ export default new Vuex.Store({
       return http.get("news/").then((resp) => {
         commit("SET_NEWS", resp.data.items);
       })
-    }
+    },
+    getHospitalList({ commit }) {
+      return http
+        .get("/hospital/list")
+        .then((resp) => {
+          commit("SET_HOSPITALLIST", resp.data)
+        });
+    },
   },
   getters: {
     userInfo(state) {
@@ -315,6 +326,9 @@ export default new Vuex.Store({
     },
     getNews(state) {
       return state.news;
+    },
+    hospitalList(state) {
+      return state.hospitalList;
     }
   }
 });

@@ -46,7 +46,14 @@
                 >
                   공원
                 </v-chip>
-
+                <v-chip
+                  class="ma-2"
+                  color="red lighten-1"
+                  text-color="white"
+                  @click="getHospital"
+                >
+                  병원
+                </v-chip>
               </v-col>
 
                 <div id="map_wrap">
@@ -76,7 +83,8 @@ export default {
     };
   },
   created() {
-    this.$store.dispatch("getParkList")
+    // this.$store.dispatch("getParkList")
+    // this.$store.dispatch("getHospitalList")
   },
   mounted() {
     this.markerdatas = this.getHousedealList;
@@ -93,7 +101,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getHousedealList", "getHousedealState", "parkList"]),
+    ...mapGetters(["getHousedealList", "getHousedealState", "parkList", "hospitalList"]),
   },
   methods: {
     initMap() {
@@ -402,10 +410,74 @@ export default {
         listEl.appendChild(fragment);
       }
     },
+    getHospital(){
+      this.listOn = false;
+      this.$store.dispatch("getHospitalList").then(()=>{
+        this.hLocation();
+      })
+    },
+    hLocation(){
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+                mapOption = { 
+                    center: new kakao.maps.LatLng(37.655264, 127.0771201), // 지도의 중심좌표
+                    level: 7 // 지도의 확대 레벨
+                };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+            
+            // 마커를 표시할 위치와 title 객체 배열입니다 
+            var positions = this.hospitalList;
+            // console.log(positions[0])
+
+            // 마커 이미지의 이미지 주소입니다
+            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+                
+            for (var i = 0; i < positions.length; i ++) {
+                
+                var hlat
+                var hlng
+
+                var geocoder = new kakao.maps.services.Geocoder(),
+                    tmX = positions[i].hx,
+                    tmY = positions[i].hy;
+
+                var callback = function(result, status) {
+                  if (status === kakao.maps.services.Status.OK) {
+                      // console.log(result[0].x); // 126.570667
+                      // console.log(result[0].y); // 33.45070100000001
+                      hlat = result[0].x
+                      hlng = result[0].y
+                      console.log("lat : "+hlat)
+                      console.log("lng : "+hlng)
+                  }
+              };
+
+                geocoder.transCoord(tmX, tmY, callback, {
+                input_coord: kakao.maps.services.Coords.TM,
+                output_coord: kakao.maps.services.Coords.WGS84
+            });
+                // console.log("변환 후")
+                // 마커 이미지의 이미지 크기 입니다
+                var imageSize = new kakao.maps.Size(24, 35); 
+                
+                // 마커 이미지를 생성합니다    
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+                
+                // console.log("마커생성전")
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    map : map,
+                    position: new kakao.maps.LatLng(hlng, hlat), // 마커를 표시할 위치
+                    title : positions[i].hname, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image : markerImage // 마커 이미지 
+                });
+                console.log(marker)
+            }
+        },
     getParkInfo(){
         this.listOn = false;
         this.$store.dispatch("getParkList").then(()=>{
-            console.log("불러온 parkList : "+this.parkList)
+            // console.log("불러온 parkList : "+this.parkList)
             this.parkLocation()
             })   
     },
@@ -420,7 +492,7 @@ export default {
             
             // 마커를 표시할 위치와 title 객체 배열입니다 
             var positions = this.parkList;
-            console.log(positions[0])
+            // console.log(positions[0])
 
             // 마커 이미지의 이미지 주소입니다
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
