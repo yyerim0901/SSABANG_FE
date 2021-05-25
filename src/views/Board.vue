@@ -46,7 +46,7 @@
                                     <v-pagination
                                     v-model="page"
                                     @input="getNewBoard"
-                                    :length="boardList.endpage"
+                                    :length="boardList.totpage"
                                     prev-icon="mdi-menu-left"
                                     next-icon="mdi-menu-right"
                                     ></v-pagination>

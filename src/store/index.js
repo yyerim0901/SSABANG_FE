@@ -213,7 +213,8 @@ export default new Vuex.Store({
       });
     },
     getWordList({ commit }, word, page) {
-      if (word && page) {
+      if ((word) && page) {
+        console.log("word and page");
         http.get("/word/"+word+"/"+page).then((resp) => {
           commit("getWordList", resp.data);
         });
@@ -229,14 +230,17 @@ export default new Vuex.Store({
         });
       }
     },
-    // searchWord({ commit }, search) {
-    //   http
-    //     .get(`/word/${search}`)
-    //     .then(res => {
-    //       console.log(res.data)
-    //       commit("getWord", res.data);
-    //     })
-    // },
+    getAllWordList({commit}, page){
+      if(!page){
+        http.get("/word/%20/1").then((resp)=>{
+          commit("getWordList", resp.data);
+        })
+      }else{
+        http.get("/word/%20/"+page).then((resp)=>{
+          commit("getWordList", resp.data);
+        })
+      }
+    },
     setinit({ commit }) {
       commit("SET_HOUSEDEAL_STATE", 0);
       commit("SET_INIT");
