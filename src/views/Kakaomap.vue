@@ -28,9 +28,30 @@
                 발견 한 매물이 없습니다. 다시 검색 해 주세요.
               </strong>
               </v-alert>
+
+              <v-col v-if="getHousedealState == 2 && markerdatas" cols="12">
+                <v-chip
+                  class="ma-2"
+                  color="blue"
+                  text-color="white"
+                  @click="initMap"
+                >
+                  집
+                </v-chip>
+                <v-chip
+                  class="ma-2"
+                  color="amber accent-2"
+                  text-color="white"
+                  @click="getParkInfo"
+                >
+                  공원
+                </v-chip>
+
+              </v-col>
+
                 <div id="map_wrap">
                 <v-flex class="d-inline-flex" border="1px" id="map" style="width: 100%; height: 600px"></v-flex>
-                <v-flex v-if="getHousedealState == 2 && markerdatas" id="menu_wrap">
+                <v-flex v-if="listOn && getHousedealState == 2 && markerdatas" id="menu_wrap">
                     <ul id="placesList"/>
                     <div id="pagination"></div>
                 </v-flex>
@@ -51,7 +72,11 @@ export default {
       alert:'',
       markerdatas: [],
       datasize: "",
+      listOn:true,
     };
+  },
+  created() {
+    this.$store.dispatch("getParkList")
   },
   mounted() {
     this.markerdatas = this.getHousedealList;
@@ -68,10 +93,11 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(["getHousedealList", "getHousedealState"]),
+    ...mapGetters(["getHousedealList", "getHousedealState", "parkList"]),
   },
   methods: {
     initMap() {
+      this.listOn = true;
       var container = document.getElementById("map");
       var options = {
         center: new kakao.maps.LatLng(37.5642135, 127.0016985),
@@ -376,6 +402,49 @@ export default {
         listEl.appendChild(fragment);
       }
     },
+    getParkInfo(){
+        this.listOn = false;
+        this.$store.dispatch("getParkList").then(()=>{
+            console.log("불러온 parkList : "+this.parkList)
+            this.parkLocation()
+            })   
+    },
+    parkLocation(){
+            var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
+                mapOption = { 
+                    center: new kakao.maps.LatLng(37.655264, 127.0771201), // 지도의 중심좌표
+                    level: 7 // 지도의 확대 레벨
+                };
+
+            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+            
+            // 마커를 표시할 위치와 title 객체 배열입니다 
+            var positions = this.parkList;
+            console.log(positions[0])
+
+            // 마커 이미지의 이미지 주소입니다
+            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+                
+            for (var i = 0; i < positions.length; i ++) {
+                
+                // 마커 이미지의 이미지 크기 입니다
+                var imageSize = new kakao.maps.Size(24, 35); 
+                
+                //데이터 뒤에 붙는 애들 제거
+                var cutlng = positions[i].lng.substring(0,positions[i].lng.length-1);
+                // 마커 이미지를 생성합니다    
+                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+                
+                // 마커를 생성합니다
+                var marker = new kakao.maps.Marker({
+                    map : map,
+                    position: new kakao.maps.LatLng(cutlng, positions[i].lat), // 마커를 표시할 위치
+                    title : positions[i].parkname, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    image : markerImage // 마커 이미지 
+                });
+                console.log(marker)
+            }
+        }
   },
 };
 </script>
@@ -426,7 +495,7 @@ export default {
 
 #menu_wrap {
   position: absolute;
-  top: 82px;
+  top: 155px;
   left: 0px;
   bottom: 0;
   width: 300px;
