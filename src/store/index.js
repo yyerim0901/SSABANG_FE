@@ -88,32 +88,22 @@ export default new Vuex.Store({
   actions: {
     //로그인 시도
     login({ dispatch }, loginObj) {
-      console.log(loginObj)
       http
         .post("/member/login", loginObj)
-        //loginObj = {userid, password}
         .then(res => {
-          console.log(res.data)
-          console.log("userid : " + res.data.userid)
-          
-          // console.log(res)
           Vue.prototype.$cookies.set("login_cookie", res.data.userid);
-          // console.log(Vue.prototype.$cookies.get("login_cookie"))
           dispatch("getMemberInfo")
           router.push("/mypage")
-          // console.log(res)
 
         })
     },
     logout({ commit }) {
       Vue.prototype.$cookies.remove("login_cookie")
-      // Vue.prototype.$cookies.config("0");
       commit("logout")
       router.push("/")
     },
     getMemberInfo({ commit }) {
       let cookie = Vue.prototype.$cookies.get("login_cookie")
-      console.log("여기는 스토어에 겟멤버인포")
       http
         .get("/member", {
           params: {
@@ -121,7 +111,6 @@ export default new Vuex.Store({
           }
         })
         .then(res => {
-          console.log(res)
           let userInfo = {
             userid: res.userid,
             userpw: res.userpw,
@@ -135,7 +124,6 @@ export default new Vuex.Store({
         })
     },
     registerMember(context, MemberObj) {
-      console.log(MemberObj)
       http
         .post("/member", MemberObj)
         .then(res => {
@@ -155,7 +143,6 @@ export default new Vuex.Store({
     },
     Mypage({ commit }) {
       let cookie = Vue.prototype.$cookies.get("login_cookie")
-      console.log("여기는 스토어에 마이페이지")
       http
         .get("/member", {
           params: {
@@ -163,7 +150,6 @@ export default new Vuex.Store({
           }
         })
         .then(res => {
-          console.log(res)
           let userInfo = {
             userid: res.data.userid,
             userpw: res.data.userpw,
@@ -177,8 +163,6 @@ export default new Vuex.Store({
         })
     },
     updateMember(context, MemberObj) {
-      console.log(MemberObj)
-      console.log("store에 updateMember MemberObj: "+MemberObj)
       http
         .put("/member", MemberObj)
         .then(res => {
@@ -205,7 +189,6 @@ export default new Vuex.Store({
       });
     },
     registerBoard({ commit }, boardItem) {
-      console.log(boardItem)
       http
         .post("/board", boardItem)
         .then(() => {
@@ -219,21 +202,17 @@ export default new Vuex.Store({
       commit("selectOne", boardItem);
     },
     updateBoard({ commit }, boardItem) {
-      console.log(boardItem);
       http.put("/board", boardItem).then(() => {
         commit("selectOne", boardItem);
       });
     },
     getWordList({ commit }, word, page) {
       if ((word) && page) {
-        console.log("word and page");
         http.get("/word/"+word+"/"+page).then((resp) => {
           commit("getWordList", resp.data);
         });
       } else if (word) {
-        console.log("just word");
         http.get("/word/"+word).then((resp) => {
-          console.log(resp.data)
           commit("getWordList", resp.data);
         });
       } else {
