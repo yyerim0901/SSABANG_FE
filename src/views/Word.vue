@@ -39,10 +39,10 @@
                                 <th width="15%" class="text-center">
                                     용어
                                 </th>
-                                <th class="text-center">
+                                <th class="text-left">
                                     의미
                                 </th>
-                                <th width="15%" class="text-center">
+                                <th class="text-left">
                                     예시
                                 </th>
                                 </tr>
@@ -53,13 +53,13 @@
                                 :key="item.word"
                                 >
                                 <td>{{ item.word }}</td>
-                                <td>{{ item.descript }}</td>
-                                <td>{{ item.ex }}</td>
+                                <td class="text-left">{{ item.descript }}</td>
+                                <td class="text-left">{{ item.ex }}</td>
                                 </tr>
                             </tbody>
                             </template>
                         </v-simple-table>
-                        <v-row>
+                        <v-row style="margin-top:8px;">
                             <v-col></v-col>
                             <v-col class="text-right">
                                 <div>
@@ -72,6 +72,7 @@
                                     ></v-pagination>
                                 </div>
                             </v-col>
+                            <v-col></v-col>
                         </v-row>
                     </v-sheet>
                 </v-flex>
