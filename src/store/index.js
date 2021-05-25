@@ -272,11 +272,11 @@ export default new Vuex.Store({
         });
     },
     getParkList({ commit }) {
-      http
+      return http
         .get("/park/list")
         .then((resp) => {
           commit("SET_PARKLIST", resp.data)
-        })
+        });
     }
   },
   getters: {
@@ -301,7 +301,7 @@ export default new Vuex.Store({
     getHousedealState(state) {
       return state.housedealstate;
     },
-    getParkList(state) {
+    parkList(state) {
       return state.parkList;
     }
   }

@@ -10,7 +10,8 @@
     </v-container>
 </template>
 
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=2008bf66e08970787dd3cb4ad3a596ff"></script>
+<script type="text/javascript" 
+src="http://dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=2008bf66e08970787dd3cb4ad3a596ff&libraries=services,clusterer,drawing"></script>
 <script>
 import {mapGetters} from "vuex";
 
@@ -19,16 +20,18 @@ export default {
         return {
             lat:'',
             long:'',
-            parklist:'',
         }
     },
     created() {
         this.$store.dispatch("getParkList")
     },
     computed: {
-        ...mapGetters(["getParkList"]),
-        parklist(){
-            console.log('data change');
+        ...mapGetters(["parkList"]),
+    },
+    watch:{
+        parkList(){
+            console.log('oh park refresh!!');
+            console.log(this.parkList)
         }
     },
     methods:{
@@ -61,7 +64,7 @@ export default {
                         lon = position.coords.longitude; // 경도
                     
                     //우선은 현재위치말고 서울 위치로 잡아서 하기!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    var locPosition = new kakao.maps.LatLng(lat, lon), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
+                    var locPosition = new kakao.maps.LatLng(37.655264, 127.0771201), // 마커가 표시될 위치를 geolocation으로 얻어온 좌표로 생성합니다
                         message = '<div style="padding:5px;">현재위치</div>'; // 인포윈도우에 표시될 내용입니다
                     
                     // 마커와 인포윈도우를 표시합니다
@@ -103,25 +106,23 @@ export default {
             }    
         },
         loadData(){
-            this.$store.dispatch("getParkList");
-            this.parklist = this.parkList
-            console.log(this.$store.state.parkList)
-            console.log("store에 parkList : "+this.parkList)
-            console.log("여기 parklist : "+this.parklist)
-            // this.parkLocation()
+            this.$store.dispatch("getParkList").then(()=>{
+                console.log("불러온 parkList : "+this.parkList)
+                this.parkLocation()
+                })           
         },
         parkLocation(){
             var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
                 mapOption = { 
-                    center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-                    level: 3 // 지도의 확대 레벨
+                    center: new kakao.maps.LatLng(37.655264, 127.0771201), // 지도의 중심좌표
+                    level: 5 // 지도의 확대 레벨
                 };
 
             var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
             
             // 마커를 표시할 위치와 title 객체 배열입니다 
-            var positions = this.parklist;
-            console.log(positions)
+            var positions = this.parkList;
+            console.log(positions[0])
 
             // 마커 이미지의 이미지 주소입니다
             var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
@@ -131,13 +132,16 @@ export default {
                 // 마커 이미지의 이미지 크기 입니다
                 var imageSize = new kakao.maps.Size(24, 35); 
                 
+                //데이터 뒤에 붙는 애들 제거
+                var cutlng = positions[i].lng.substring(0,positions[i].lng.length-1);
                 // 마커 이미지를 생성합니다    
                 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
                 
                 // 마커를 생성합니다
                 var marker = new kakao.maps.Marker({
-                    position: new kakao.maps.LatLng(positions.lat, positions.lng), // 마커를 표시할 위치
-                    title : data.parkname, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+                    map : map,
+                    position: new kakao.maps.LatLng(cutlng, positions[i].lat), // 마커를 표시할 위치
+                    title : positions[i].parkname, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
                     image : markerImage // 마커 이미지 
                 });
             }
