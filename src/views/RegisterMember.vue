@@ -45,10 +45,10 @@
                         </v-row>
                             <v-row>
                                 <v-col style="margin:0px; padding:0px">
-                                    <v-text-field type="text" id="sample4_postcode" label="우편번호"></v-text-field>
+                                    <v-text-field type="text" v-model="userInfo.userzonecode" label="우편번호"></v-text-field>
                                 </v-col>
                                 <v-col>
-                                    <v-btn @click="sample5_execDaumPostcode()">우편번호 찾기</v-btn>
+                                    <v-btn @click="findPostalcode">우편번호 찾기</v-btn>
                                 </v-col>
                             </v-row>
                             <v-row>
@@ -90,8 +90,7 @@
             
 </template>
 
-<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-<script src="//dapi.kakao.com/v2/maps/sdk.js?appkey=f8f336aae55d2597f88fd05c5bf7e2cd&libraries=services"></script>
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 // import { mapActions } from 'vuex';
 
@@ -104,6 +103,7 @@ export default {
                 userpw:'',
                 username:'',
                 useremail:'',
+                userzonecode:'',
                 useraddress:'',
             },
             rules:{
@@ -113,6 +113,11 @@ export default {
                 '비밀번호는 한 개 이상의 특수문자, 대문자, 숫자를 포함해야합니다.',
             }            
         }
+    },
+    mounted() {
+      let recaptchaScript = document.createElement('script')
+      recaptchaScript.setAttribute('src', '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js')
+      document.head.appendChild(recaptchaScript)
     },
     methods: {
         login(){
@@ -125,12 +130,12 @@ export default {
             alert("회원가입완료!")
             this.$router.push("/")
         },
-        sample5_execDaumPostcode(){
+        findPostalcode(){
             new daum.Postcode({
-                oncomplete: function(data) {
-                    // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분입니다.
-                    // 예제를 참고하여 다양한 활용법을 확인해 보세요.
-                }
+                oncomplete:((data)=>{
+                    this.userInfo.userzonecode = data.zonecode;
+                    this.userInfo.useraddress = data.address;
+                })
             }).open();
         }
     },
