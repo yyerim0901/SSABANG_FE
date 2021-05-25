@@ -7,11 +7,14 @@
         <v-flex>
           <v-sheet class="justify-center" width="800px" height="150px" rounded="xl">
             <h4 v-if="searching == 1">데이터 로딩 중 입니다. 잠시만 기다려 주세요.</h4>
-            <v-text-field 
+            <v-text-field
+            height="60px"
             filled rounded dense 
             @keyup.enter="map" 
-            v-model="searchWord" 
+            v-model="searchWord"
+            append-icon="fas fa-search"
             placeholder="찾으실 동 이나 구 를 검색하세요">
+            <v-icon color="black">fas fa-search</v-icon>
             </v-text-field>
           </v-sheet>
         </v-flex>
@@ -19,6 +22,7 @@
     </v-container>
 </template>
 
+<script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 <script>
 import { mapGetters } from "vuex";
 
