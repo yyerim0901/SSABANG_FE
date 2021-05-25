@@ -1,9 +1,9 @@
 <template>
   <v-app>
-    <v-container>
+    <v-container style="margin:0px; padding:0px;">
       <v-layout>
         <v-flex>
-          <v-sheet style="padding:30px;">
+          <v-sheet style="padding:0px;">
                 <v-alert
                   v-model="alert"
                   color="cyan"
@@ -28,17 +28,13 @@
                 발견 한 매물이 없습니다. 다시 검색 해 주세요.
               </strong>
               </v-alert>
-              <template>
-                <v-container id="map_wrap">
-                  <v-layout border="3px">
-                    <v-flex class="d-inline-flex" border="1px" id="map" style="width: 100%; height: 600px">얜뭐고</v-flex>
-                  </v-layout>
+                <div id="map_wrap">
+                <v-flex class="d-inline-flex" border="1px" id="map" style="width: 100%; height: 600px"></v-flex>
                 <v-flex v-if="getHousedealState == 2 && markerdatas" id="menu_wrap">
                     <ul id="placesList"/>
                     <div id="pagination"></div>
                 </v-flex>
-                </v-container>
-              </template>
+                </div>
           </v-sheet>
         </v-flex>
       </v-layout>
@@ -52,10 +48,9 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      alert:'',
       markerdatas: [],
-      isFound: false,
       datasize: "",
-      dialog:false,
     };
   },
   mounted() {
@@ -143,38 +138,79 @@ export default {
               "</span>";
           }
 
-          //주차자리
-          if (data.parking_size) {
-            iwContent +=
-              '<span class="parking_size"> | 주차 자리 : ' +
-              data.parking_size +
-              "</span>";
-          }
-          if (data.build_company) {
-            iwContent +=
-              '<br><span class="parking_size"> 건설사 : ' +
-              data.build_company +
-              "</span>";
-          }
-          iwContent += "</div>";
+          iwContent += "<br><span class='want_detail'>더 많은 정보를 보시려면 우클릭하세요</span></div>";
 
           var infowindow = new kakao.maps.InfoWindow({
             content: iwContent,
           });
 
+          var iwContent2 = '<div id="detail_info" style="padding:5px; text-align:center; width:350px;">';
+
+          var rand = Math.floor(Math.random() * 4);
+          if(rand==0){
+            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjycF-c8xN4m5Yi6LjQfMTvkhEbj6qB0Eu9Q&usqp=CAU">';
+          }else if(rand==1){
+            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-j7glN4-G_cNDVkUp06QLCIwwAKojh6nOYw&usqp=CAU">';
+          }else if(rand==2){
+            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE-QLEBzQwOq4jffKluRNiGjIjrJODmCKwCg&usqp=CAU">';
+          }else{
+            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSblTmx_YB-OGKEcJ9A2UYTPLlJvxLZ45eD7g&usqp=CAU">';
+          }
+          
+          rand = Math.floor(Math.random() * 100 + 50);
+          iwContent2 += '<br><span class="apt_name">' + data.apt_NM + "</span> | <span class='apt_amt'>" + rand/10 + "억</span><br>"; // 아파트 이름
+          iwContent2 += '<span class="load">' + data.apt_load_NM + "</span><br>"; // 아파트 풀 주소
+
+          // console.log(rand);
+          // iwContent2 += '<span>'+rand/10+'억</span>';
+
+          //전화번호
+          if (data.call_number.length == 8) {
+            iwContent2 +=
+              '  <span class="tel">010-' +
+              data.call_number.slice(0, 4) +
+              "-" +
+              data.call_number.slice(4, 9) +
+              "</span>";
+          } else {
+            iwContent2 +=
+              '  <span class="tel">070-' +
+              data.call_number.slice(0, 4) +
+              "-" +
+              data.call_number.slice(4, 9) +
+              "</span>";
+          }
+
+          //주차자리
+          if (data.parking_size) {
+            iwContent2 +=
+              '<span class="parking_size"> | 주차 자리 : ' +
+              data.parking_size +
+              "</span>";
+          }
+          if (data.build_company) {
+            iwContent2 +=
+              '<br><span class="parking_size"> 건설사 : ' +
+              data.build_company +
+              "</span>";
+          }
+
+          var infowindow2 = new kakao.maps.InfoWindow({
+            content: iwContent2,
+            removable : true
+          });
+
+          //마커 이벤트 등록
           kakao.maps.event.addListener(marker, "mouseover", function () {
             infowindow.open(map, marker);
           });
 
           kakao.maps.event.addListener(marker, "click", function () {
-            console.log("그냥 클릭")
             map.panTo(marker.getPosition());
           });
           kakao.maps.event.addListener(marker, "rightclick", function () {
-            //dialog띄우기
-            console.log('right click! ');
-            this.dialog = true;
-  
+            infowindow.close();
+            infowindow2.open(map, marker);
           });
 
           kakao.maps.event.addListener(marker, "mouseout", function () {
@@ -363,6 +399,15 @@ export default {
 #detail_info .parking_size {
   font-size: 10px;
 }
+#detail_info .want_detail{
+  font-size: 12px;
+  color:orange;
+  font-weight:bold;
+}
+#detail_info .apt_amt{
+  font-weight : bold;
+  color:sandybrown;
+}
 
 .map_wrap,
 .map_wrap * {
@@ -381,12 +426,12 @@ export default {
 
 #menu_wrap {
   position: absolute;
-  top: 135px;
-  left: 25px;
+  top: 82px;
+  left: 0px;
   bottom: 0;
   width: 300px;
   height: 580px;
-  margin: 0px 0px 0px 30px;
+  margin: 0px 0px 0px 10px;
   padding: 7px;
   overflow-y: auto;
   background: rgba(255, 255, 255, 0.9);
