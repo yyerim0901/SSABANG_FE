@@ -24,7 +24,7 @@
                                     outlined
                                     large
                                     color="black"
-                                    @click="searchWord"
+                                    v-on:click.native="searchWord"
                                     >
                                     검색
                                     </v-btn>
@@ -50,7 +50,7 @@
                                 </thead>
                                 <tbody>
                                     <tr
-                                    v-for="item in words"
+                                    v-for="item in getWordList.data"
                                     :key="item.word"
                                     >
                                     <td>{{ item.word }}</td>
@@ -84,12 +84,18 @@ export default {
         this.$store.dispatch("getWordList");
     },
     method:{
-        searchWord(){
-            //검색해서.....저 표에 나오는 결과값을 바꿔야하는데...
-            //다른 컴포넌트를 띄우거나....
-            //그걸 어떻게 하지..?
-            //리스트 띄울 때 페이지네이션도 해야됨 
+        searchWord :function(event){
+            if(event){
+                console.log("clicked");
+                // this.$store.dispatch("getWordList", this.search);
+            }
         }
+        // searchWord(event){
+        //     //검색해서.....저 표에 나오는 결과값을 바꿔야하는데...
+        //     //다른 컴포넌트를 띄우거나....
+        //     //그걸 어떻게 하지..?
+        //     //리스트 띄울 때 페이지네이션도 해야됨 
+        // }
     }
 }
 </script>

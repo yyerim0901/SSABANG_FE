@@ -174,15 +174,13 @@ export default new Vuex.Store({
           router.push("/mypage")
         })
     },
-    getBoard({ commit }) {
-      http.get("/board").then((resp) => {
-        console.log(resp.data)
+    getBoard({ commit }, pagenum) {
+      http.get("/board/list/"+pagenum).then((resp) => {
         commit("getBoard", resp.data);
       });
     },
     selectOne({ commit }, bnum) {
-      http.get(`/board/${bnum}`).then((resp) => {
-        console.log("action bnum :" + bnum);
+      http.get(`/board/detail/${bnum}`).then((resp) => {
         commit("selectOne", resp.data);
       });
     },
@@ -214,11 +212,22 @@ export default new Vuex.Store({
         commit("selectOne", boardItem);
       });
     },
-    getWords({ commit }) {
-      http.get("/word").then((resp) => {
-        console.log(resp.data)
-        commit("getWordList", resp.data);
-      });
+    getWordList({ commit }, word, page) {
+      if (word && page) {
+        http.get("/word/"+word+"/"+page).then((resp) => {
+          commit("getWordList", resp.data);
+        });
+      } else if (word) {
+        console.log("just word");
+        http.get("/word/"+word).then((resp) => {
+          console.log(resp.data)
+          commit("getWordList", resp.data);
+        });
+      } else {
+        http.get("/word").then((resp) => {
+          commit("getWordList", resp.data);
+        });
+      }
     },
     // searchWord({ commit }, search) {
     //   http

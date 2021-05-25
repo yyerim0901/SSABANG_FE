@@ -27,7 +27,7 @@
                             </thead>
                             <tbody>
                                 <tr
-                                v-for="item in boardList"
+                                v-for="item in boardList.data"
                                 :key="item.bnum"
                                 >
                                 <td class="text-center">{{ item.bnum }}</td>
@@ -45,7 +45,8 @@
                                 <div>
                                     <v-pagination
                                     v-model="page"
-                                    :length="5"
+                                    @input="getNewBoard"
+                                    :length="boardList.endpage"
                                     prev-icon="mdi-menu-left"
                                     next-icon="mdi-menu-right"
                                     ></v-pagination>
@@ -70,6 +71,7 @@ export default {
     data () {
         return {
             bnum:'',
+            page:''
         }
     },
     filters:{
@@ -86,14 +88,16 @@ export default {
             console.log(bnum); 
             this.$store.dispatch("selectOne", bnum);
             this.$router.push("/boarddetail");
+        },
+        getNewBoard(){
+            this.$store.dispatch("getBoard",this.page);
         }
-
     },
     computed: {
-        ...mapGetters(['boardList', 'searchOn'])
+        ...mapGetters(['boardList', 'searchOn']),
     },
     created() {
-        this.$store.dispatch("getBoard");
+        this.$store.dispatch("getBoard",1);
     },
     }
 </script>
