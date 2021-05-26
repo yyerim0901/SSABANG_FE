@@ -16,11 +16,11 @@
                             ></v-text-field>
 
                             <v-text-field
-                            v-model="userid"
+                            v-model="this.board.bwriter"
                             type="text"
                             label="작성자"
                             readonly
-                            >{{userid}}</v-text-field>
+                            >{{this.board.bwriter}}</v-text-field>
 
                             <v-textarea
                             v-model="board.bcontent"
@@ -60,10 +60,9 @@ export default {
         return {
             board:{
                 btitle:'',
-                bwriter:this.userid,
+                bwriter:'',
                 bcontent:'',
             },
-            userid:'',
         }
     },
     methods:{
@@ -77,8 +76,7 @@ export default {
         },
     },
     created() {
-        this.userid = this.$cookies.get("login_cookie")
-        console.log(this.userid)
+        this.board.bwriter = this.$cookies.get("login_cookie")
     },
 }
 </script>
