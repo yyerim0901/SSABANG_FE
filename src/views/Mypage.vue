@@ -1,7 +1,7 @@
 <template>
     <div>
         <v-container>
-            <v-card width="70%" style=" margin-left:270px;">
+            <v-card width="70%" style=" margin-left:150px;">
                 <v-simple-table style="padding:20px;">
                     <template
                         align= "start"

@@ -6,7 +6,7 @@
                 <v-flex>
                     <v-sheet width="80%">
                         <v-form
-                            style="margin-left:340px;"
+                            style="margin-left:200px;"
                             ref="form"
                         >
                             <v-text-field

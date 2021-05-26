@@ -39,7 +39,7 @@
                                 <th width="15%" class="text-center">
                                     용어
                                 </th>
-                                <th class="text-left">
+                                <th width="30%" class="text-left">
                                     의미
                                 </th>
                                 <th class="text-left">
@@ -66,7 +66,7 @@
                                     <v-pagination
                                     v-model="page"
                                     @input="getNewWord"
-                                    :length="getWordList.totpage"
+                                    :length="5"
                                     prev-icon="mdi-menu-left"
                                     next-icon="mdi-menu-right"
                                     ></v-pagination>
