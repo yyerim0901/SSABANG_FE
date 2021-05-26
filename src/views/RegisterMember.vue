@@ -70,14 +70,6 @@
                                         >
                                         회원가입
                                         </v-btn>
-
-                                        <v-btn
-                                        color="primary"
-                                        class="mr-4"
-                                        @click="login"
-                                        >
-                                        로그인
-                                        </v-btn>
                                     </v-col>
                                 </v-row>
                             </v-container>
@@ -120,14 +112,9 @@ export default {
       document.head.appendChild(recaptchaScript)
     },
     methods: {
-        login(){
-            console.log(this.userInfo)
-            // this.$router.push("/login");
-        },
         register(){
             console.log(this.userInfo)
             this.$store.dispatch("registerMember", this.userInfo)
-            alert("회원가입완료!")
             this.$router.push("/")
         },
         findPostalcode(){
