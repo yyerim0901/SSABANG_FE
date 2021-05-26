@@ -237,7 +237,7 @@ export default new Vuex.Store({
       commit("SET_INIT");
     },
     searchAll({ commit }) {
-      http
+      return http
         .get("house/")
         .then((resp) => {
           commit("SET_HOUSEDEAL_STATE", 1);
@@ -248,7 +248,7 @@ export default new Vuex.Store({
         });
     },
     searchZone({ commit }, zone) {
-      http
+      return http
         .get("house/zone/" + zone)
         .then((resp) => {
           commit("SET_HOUSEDEAL_STATE", 1);

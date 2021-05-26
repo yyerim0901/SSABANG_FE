@@ -116,7 +116,6 @@ export default {
       map.setMinLevel(2);
 
       var listEl = document.getElementById("placesList"),
-        // menuEl = document.getElementById('menu_wrap'),
         fragment = document.createDocumentFragment();
 
       //데이터가 없으면 바로 메소드 종료
@@ -129,7 +128,8 @@ export default {
         paginationEls = [];
 
       var idx = -1;
-      this.markerdatas.forEach((data) => {
+      // this.markerdatas.forEach((data) => {
+      this.getHousedealList.forEach((data) => {
         if (data.lat != 0 && data.lng != 0 && data.apt_load_NM) {
           idx = idx + 1;
           var imageSrc =

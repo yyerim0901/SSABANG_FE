@@ -115,12 +115,9 @@ export default {
     ...mapGetters(['getisLogin', 'getNews'])
   },
   created() {
-    // console.log(this.getisLogin)
     this.$store.dispatch('getNews','공공주택').then(()=>{
-      console.log(this.getNews);
       var newslistEl = document.getElementById("newsbar");
       this.getNews.forEach((data, index)=>{
-        console.log(data.title);
         var el = document.createElement("a");
         el.style.textDecoration = "none";
         el.href = data.link;
