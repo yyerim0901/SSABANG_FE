@@ -17,7 +17,7 @@
                             <v-text-field
                             v-model="boardListItem.bwriter"
                             type="text"
-                            required
+                            readonly
                             >{{boardListItem.bwriter}}</v-text-field>
 
                             <v-textarea

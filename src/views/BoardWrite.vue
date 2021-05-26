@@ -16,11 +16,11 @@
                             ></v-text-field>
 
                             <v-text-field
-                            v-model="board.bwriter"
+                            v-model="userid"
                             type="text"
                             label="작성자"
-                            required
-                            ></v-text-field>
+                            readonly
+                            >{{userid}}</v-text-field>
 
                             <v-textarea
                             v-model="board.bcontent"
@@ -62,8 +62,8 @@ export default {
                 btitle:'',
                 bwriter:'',
                 bcontent:'',
-                userid:'',
-            }
+            },
+            userid:'',
         }
     },
     methods:{
@@ -74,8 +74,12 @@ export default {
             this.$store.dispatch("registerBoard",this.board)
             this.$store.dispatch("getBoard",1)
             this.$router.push("/board")
-        }
-    }
+        },
+    },
+    created() {
+        this.userid = this.$cookies.get("login_cookie")
+        console.log(this.userid)
+    },
 }
 </script>
 
