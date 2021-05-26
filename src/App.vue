@@ -105,9 +105,6 @@ export default {
   computed: {
     ...mapGetters(['getisLogin'])
   },
-  created() {
-    
-  },
 };
 </script>
 

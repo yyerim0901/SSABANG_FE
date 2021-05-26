@@ -61,11 +61,6 @@ export default {
     },
     methods: {
         ...mapActions(['login'])
-        // login(){
-        //     this.$store.dispatch("login", this.userid, this.userpw)
-        //     alert("로그인 완료!")
-        //     this.$router.push("/mypage")
-        // }
     },
     
 }
