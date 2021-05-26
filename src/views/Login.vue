@@ -20,7 +20,7 @@
                                 <v-text-field
                                 :append-icon="showpw ? 'mdi-eye' : 'mdi-eye-off'"
                                 :rules="[rules.required, rules.min]"
-                                :type="show3 ? 'text' : 'password'"
+                                :type="showpw ? 'text' : 'password'"
                                 name="input-10-2"
                                 label="패스워드를 입력하세요."
                                 class="input-group--focused"

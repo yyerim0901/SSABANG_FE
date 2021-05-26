@@ -36,12 +36,16 @@
                     <v-btn @click="map" outlined x-large style="margin-top:16px">검색</v-btn>
                 </v-cols>
               </v-row>
+              <v-flex>
+                    <MARQUEE id="newsbar"></MARQUEE>
+                  </v-flex>
           </v-sheet>
         </v-flex>
       </v-layout>
     </v-container>
 </template>
 
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script defer src="https://use.fontawesome.com/releases/v5.0.8/js/all.js"></script>
 <script>
 import { mapGetters } from "vuex";
@@ -73,9 +77,21 @@ export default {
   },
   created() {
     this.$store.dispatch("setinit");
+
+    this.$store.dispatch('getNews','공공주택').then(()=>{
+      var newslistEl = document.getElementById("newsbar");
+      this.getNews.forEach((data, index)=>{
+        var el = document.createElement("a");
+        el.style.textDecoration = "none";
+        el.href = data.link;
+        el.target = "_blank";
+        el.innerHTML = "< 뉴스 " + (index+1) + " : " + data.title + ">  ";
+        newslistEl.appendChild(el);
+      })
+    })
   },
   computed: {
-    ...mapGetters(["getHousedealList", "getHousedealState"]),
+    ...mapGetters(["getHousedealList", "getHousedealState", "getisLogin", "getNews"]),
   },
   watch:{
     getHousedealState() {

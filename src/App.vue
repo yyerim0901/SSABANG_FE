@@ -4,17 +4,17 @@
         <v-container>
         <v-toolbar flat>
                   <v-btn
-                  to="/board"
-                  class="ma-1"
-                  color="darkgrey"
-                  plain
+                    to="/"
+                    class="ma-1"
+                    color="darkgrey"
+                    plain
                   >
-                    <h3>공지사항</h3>
+                    <h3><v-icon>mdi-home</v-icon></h3>
                   </v-btn>
                   <v-menu text offset-y>
                     <template text v-slot:activator="{ on, attrs }">
                       <v-btn text class="ma-1" color="darkgrey" v-bind="attrs" v-on="on" plain>
-                        <h3>etc</h3>
+                        <h3><v-icon>mdi-star</v-icon></h3>
                       </v-btn>
                     </template>
                     <v-list>
@@ -26,17 +26,16 @@
                       </v-list-item>
                     </v-list>
                   </v-menu>
+                  <v-btn
+                  to="/board"
+                  class="ma-1"
+                  color="darkgrey"
+                  plain
+                  >
+                    <h3>공지사항</h3>
+                  </v-btn>
                     
                     <v-spacer></v-spacer>
-
-                    <v-btn
-                    to="/"
-                    class="ma-1"
-                    color="darkgrey"
-                    plain
-                  >
-                    <h3>HOME</h3>
-                  </v-btn>
 
                     <v-btn
                     to="/login"
@@ -83,17 +82,12 @@
                     <img height="280px;" src="https://img1.daumcdn.net/thumb/R1280x0/?scode=mtistory2&fname=https%3A%2F%2Fblog.kakaocdn.net%2Fdn%2FmsXDk%2Fbtq5HEjPhqy%2F2UKAKZ4E1ctie9Fwl3Dsuk%2Fimg.png" alt=""/>
                   </v-flex>
                   <router-view></router-view>
-                  <v-flex>
-                    <MARQUEE id="newsbar"></MARQUEE>
-                  </v-flex>
-
                 </v-sheet>
         </v-container>
       </v-app>
   </div>
 </template>
 
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 <script>
 import {mapGetters} from "vuex";
 
@@ -112,20 +106,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters(['getisLogin', 'getNews'])
+    ...mapGetters(['getisLogin'])
   },
   created() {
-    this.$store.dispatch('getNews','공공주택').then(()=>{
-      var newslistEl = document.getElementById("newsbar");
-      this.getNews.forEach((data, index)=>{
-        var el = document.createElement("a");
-        el.style.textDecoration = "none";
-        el.href = data.link;
-        el.target = "_blank";
-        el.innerHTML = "< 뉴스 " + (index+1) + " : " + data.title + ">  ";
-        newslistEl.appendChild(el);
-      })
-    })
+    
   },
 };
 </script>
