@@ -3,10 +3,10 @@
         <v-container>
             <v-layout>
                 <v-flex>
-                    <v-sheet>
+                    <v-sheet width="80%">
                         <v-form
                             ref="form"
-                            style="padding:50px;"
+                            style="margin-left:350px;padding:50px;"
                         >
                         <v-row>
                             <v-text-field
