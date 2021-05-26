@@ -34,7 +34,7 @@
                   class="ma-2"
                   color="blue"
                   text-color="white"
-                  @click="initMap"
+                  @click="listOn = true"
                 >
                   집
                 </v-chip>
@@ -58,7 +58,7 @@
 
                 <div id="map_wrap">
                 <v-flex class="d-inline-flex" border="1px" id="map" style="width: 100%; height: 600px"></v-flex>
-                <v-flex v-if="listOn && getHousedealState == 2 && markerdatas" id="menu_wrap">
+                <v-flex v-show="listOn" v-if="getHousedealState == 2 && markerdatas" id="menu_wrap">
                     <ul id="placesList"/>
                     <div id="pagination"></div>
                 </v-flex>
@@ -76,6 +76,7 @@ import { mapGetters } from "vuex";
 export default {
   data() {
     return {
+      map : '',
       alert:'',
       markerdatas: [],
       datasize: "",
@@ -114,14 +115,15 @@ export default {
 
       var map = new kakao.maps.Map(container, options);
       map.setMinLevel(2);
-
-      var listEl = document.getElementById("placesList"),
-        fragment = document.createDocumentFragment();
-
+      this.map = map;
       //데이터가 없으면 바로 메소드 종료
       if (this.markerdatas.length == 0) {
         return;
       }
+
+      var listEl = document.getElementById("placesList"),
+        fragment = document.createDocumentFragment();
+
 
       var markers = [],
         itemEls = [],
@@ -132,107 +134,11 @@ export default {
       this.getHousedealList.forEach((data) => {
         if (data.lat != 0 && data.lng != 0 && data.apt_load_NM) {
           idx = idx + 1;
-          var imageSrc =
-              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoo0g1wW8kjYDG8wkl7fPg64LXcdvR_g0pbA&usqp=CAU", // 마커이미지의 주소입니다
-            imageSize = new kakao.maps.Size(29, 34), // 마커이미지의 크기입니다
-            imageOption = { offset: new kakao.maps.Point(15, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
 
-          // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
-          var markerImage = new kakao.maps.MarkerImage(
-            imageSrc,
-            imageSize,
-            imageOption
-          );
+          var marker = this.makeMarker(data);
 
-          var marker = new kakao.maps.Marker({
-            title: data.apt_NM,
-            position: new kakao.maps.LatLng(data.lat, data.lng),
-            data: data,
-            image: markerImage,
-          });
-          var iwContent =
-            '<div id="detail_info" style="padding:5px; text-align:center;">';
-          iwContent += '<span class="apt_name">' + data.apt_NM + "</span><br>"; // 아파트 이름
-          iwContent += '<span class="load">' + data.apt_load_NM + "</span><br>"; // 아파트 풀 주소
-
-          //전화번호
-          if (data.call_number.length == 8) {
-            iwContent +=
-              '  <span class="tel">010-' +
-              data.call_number.slice(0, 4) +
-              "-" +
-              data.call_number.slice(4, 9) +
-              "</span>";
-          } else {
-            iwContent +=
-              '  <span class="tel">070-' +
-              data.call_number.slice(0, 4) +
-              "-" +
-              data.call_number.slice(4, 9) +
-              "</span>";
-          }
-
-          iwContent += "<br><span class='want_detail'>더 많은 정보를 보시려면 우클릭하세요</span></div>";
-
-          var infowindow = new kakao.maps.InfoWindow({
-            content: iwContent,
-          });
-
-          var iwContent2 = '<div id="detail_info" style="padding:5px; text-align:center; width:350px;">';
-
-          var rand = Math.floor(Math.random() * 4);
-          if(rand==0){
-            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjycF-c8xN4m5Yi6LjQfMTvkhEbj6qB0Eu9Q&usqp=CAU">';
-          }else if(rand==1){
-            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-j7glN4-G_cNDVkUp06QLCIwwAKojh6nOYw&usqp=CAU">';
-          }else if(rand==2){
-            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE-QLEBzQwOq4jffKluRNiGjIjrJODmCKwCg&usqp=CAU">';
-          }else{
-            iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSblTmx_YB-OGKEcJ9A2UYTPLlJvxLZ45eD7g&usqp=CAU">';
-          }
-          
-          rand = Math.floor(Math.random() * 100 + 50);
-          iwContent2 += '<br><span class="apt_name">' + data.apt_NM + "</span> | <span class='apt_amt'>" + rand/10 + "억</span><br>"; // 아파트 이름
-          iwContent2 += '<span class="load">' + data.apt_load_NM + "</span><br>"; // 아파트 풀 주소
-
-          // console.log(rand);
-          // iwContent2 += '<span>'+rand/10+'억</span>';
-
-          //전화번호
-          if (data.call_number.length == 8) {
-            iwContent2 +=
-              '  <span class="tel">010-' +
-              data.call_number.slice(0, 4) +
-              "-" +
-              data.call_number.slice(4, 9) +
-              "</span>";
-          } else {
-            iwContent2 +=
-              '  <span class="tel">070-' +
-              data.call_number.slice(0, 4) +
-              "-" +
-              data.call_number.slice(4, 9) +
-              "</span>";
-          }
-
-          //주차자리
-          if (data.parking_size) {
-            iwContent2 +=
-              '<span class="parking_size"> | 주차 자리 : ' +
-              data.parking_size +
-              "</span>";
-          }
-          if (data.build_company) {
-            iwContent2 +=
-              '<br><span class="parking_size"> 건설사 : ' +
-              data.build_company +
-              "</span>";
-          }
-
-          var infowindow2 = new kakao.maps.InfoWindow({
-            content: iwContent2,
-            removable : true
-          });
+          var infowindow = this.makeInfo(data);
+          var infowindow2 = this.makeDetailInfo(data);
 
           //마커 이벤트 등록
           kakao.maps.event.addListener(marker, "mouseover", function () {
@@ -242,6 +148,7 @@ export default {
           kakao.maps.event.addListener(marker, "click", function () {
             map.panTo(marker.getPosition());
           });
+
           kakao.maps.event.addListener(marker, "rightclick", function () {
             infowindow.close();
             infowindow2.open(map, marker);
@@ -250,10 +157,12 @@ export default {
           kakao.maps.event.addListener(marker, "mouseout", function () {
             infowindow.close();
           });
+
           markers.push(marker);
 
           var itemEl = getListItem(marker, data, idx);
 
+          //리스트 이벤트 등록
           itemEl.onclick = function () {
             infowindow.open(map, marker);
             map.setLevel(3);
@@ -276,7 +185,7 @@ export default {
 
       var clusterer = new kakao.maps.MarkerClusterer({
         map: map, // 마커들을 클러스터로 관리하고 표시할 지도 객체
-        girdSize: 50,
+        girdSize: 35,
         averageCenter: true, // 클러스터에 포함된 마커들의 평균 위치를 클러스터 마커 위치로 설정
         minLevel: 2, // 클러스터 할 최소 지도 레벨
       });
@@ -349,19 +258,6 @@ export default {
           el.href = "#";
           el.innerHTML = p;
 
-          // el.addEventListener('click', function(){
-          //     console.log("addevent");
-          //     while(listEl.hasChildNodes()){
-          //         listEl.removeChild(listEl.lastChild);
-          //     }
-          //     fragment = document.createDocumentFragment();
-          //     for(let l=((p-1)*15); l< p*15; l++){
-          //         if(l >= itemEls.length) break;
-          //         fragment.appendChild(itemEls[l]);
-          //     }
-          //     listEl.appendChild(fragment);
-          //     setPagination();
-          // })
           paginationEls.push(el);
         }
       }
@@ -410,6 +306,109 @@ export default {
         listEl.appendChild(fragment);
       }
     },
+    makeMarker(data){ //데이터를 전달받아 마커를 만든다
+      var imageSrc =
+              "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRoo0g1wW8kjYDG8wkl7fPg64LXcdvR_g0pbA&usqp=CAU", // 마커이미지의 주소입니다
+          imageSize = new kakao.maps.Size(29, 34), // 마커이미지의 크기입니다
+          imageOption = { offset: new kakao.maps.Point(15, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+
+      // 마커의 이미지정보를 가지고 있는 마커이미지를 생성합니다
+      var markerImage = new kakao.maps.MarkerImage(
+        imageSrc,
+        imageSize,
+        imageOption
+      );
+
+      return new kakao.maps.Marker({
+        title: data.apt_NM,
+        position: new kakao.maps.LatLng(data.lat, data.lng),
+        data: data,
+        image: markerImage,
+      });
+    },
+    makeInfo(data){
+      var iwContent =
+            '<div id="detail_info" style="padding:5px; text-align:center;">';
+          iwContent += '<span class="apt_name">' + data.apt_NM + "</span><br>"; // 아파트 이름
+          iwContent += '<span class="load">' + data.apt_load_NM + "</span><br>"; // 아파트 풀 주소
+
+          //전화번호
+          if (data.call_number.length == 8) {
+            iwContent +=
+              '  <span class="tel">010-' +
+              data.call_number.slice(0, 4) +
+              "-" +
+              data.call_number.slice(4, 9) +
+              "</span>";
+          } else {
+            iwContent +=
+              '  <span class="tel">070-' +
+              data.call_number.slice(0, 4) +
+              "-" +
+              data.call_number.slice(4, 9) +
+              "</span>";
+          }
+
+          iwContent += "<br><span class='want_detail'>더 많은 정보를 보시려면 우클릭하세요</span></div>";
+
+          return new kakao.maps.InfoWindow({
+            content: iwContent,
+          });
+    },
+    makeDetailInfo(data){
+      var iwContent2 = '<div id="detail_info" style="padding:5px; text-align:center; width:350px;">';
+
+      var rand = Math.floor(Math.random() * 4);
+      if(rand==0){
+        iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRjycF-c8xN4m5Yi6LjQfMTvkhEbj6qB0Eu9Q&usqp=CAU">';
+      }else if(rand==1){
+        iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR-j7glN4-G_cNDVkUp06QLCIwwAKojh6nOYw&usqp=CAU">';
+      }else if(rand==2){
+        iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQE-QLEBzQwOq4jffKluRNiGjIjrJODmCKwCg&usqp=CAU">';
+      }else{
+        iwContent2 += '<img width="300" height="200" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSblTmx_YB-OGKEcJ9A2UYTPLlJvxLZ45eD7g&usqp=CAU">';
+      }
+          
+      rand = Math.floor(Math.random() * 100 + 50);
+      iwContent2 += '<br><span class="apt_name">' + data.apt_NM + "</span> | <span class='apt_amt'>" + rand/10 + "억</span><br>"; // 아파트 이름
+      iwContent2 += '<span class="load">' + data.apt_load_NM + "</span><br>"; // 아파트 풀 주소
+
+      //전화번호
+      if (data.call_number.length == 8) {
+        iwContent2 +=
+          '  <span class="tel">010-' +
+          data.call_number.slice(0, 4) +
+          "-" +
+          data.call_number.slice(4, 9) +
+          "</span>";
+      } else {
+        iwContent2 +=
+          '  <span class="tel">070-' +
+          data.call_number.slice(0, 4) +
+          "-" +
+          data.call_number.slice(4, 9) +
+          "</span>";
+      }
+
+      //주차자리
+      if (data.parking_size) {
+        iwContent2 +=
+          '<span class="parking_size"> | 주차 자리 : ' +
+          data.parking_size +
+          "</span>";
+      }
+      if (data.build_company) {
+        iwContent2 +=
+          '<br><span class="parking_size"> 건설사 : ' +
+          data.build_company +
+          "</span>";
+      }
+
+      return new kakao.maps.InfoWindow({
+        content: iwContent2,
+        removable : true
+      });
+    },
     getHospital(){
       this.listOn = false;
       this.$store.dispatch("getHospitalList").then(()=>{
@@ -417,90 +416,68 @@ export default {
       })
     },
     hLocation(){
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
-                mapOption = { 
-                    center: new kakao.maps.LatLng(37.655264, 127.0771201), // 지도의 중심좌표
-                    level: 7 // 지도의 확대 레벨
-                };
+            this.hospitalList.forEach((data) => {
 
-            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-            
-            // 마커를 표시할 위치와 title 객체 배열입니다 
-            var positions = this.hospitalList;
-            // console.log(positions[0])
-
-            // 마커 이미지의 이미지 주소입니다
-            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
-                
-            for (var i = 0; i < positions.length; i ++) {
-                
-                var hlat
-                var hlng
-
-                var geocoder = new kakao.maps.services.Geocoder(),
-                    tmX = positions[i].hx,
-                    tmY = positions[i].hy;
-
-                var callback = function(result, status) {
-                  if (status === kakao.maps.services.Status.OK) {
-                      // console.log(result[0].x); // 126.570667
-                      // console.log(result[0].y); // 33.45070100000001
-                      hlat = result[0].x
-                      hlng = result[0].y
-                      console.log("lat : "+hlat)
-                      console.log("lng : "+hlng)
-                  }
-              };
-
-                geocoder.transCoord(tmX, tmY, callback, {
-                input_coord: kakao.maps.services.Coords.TM,
-                output_coord: kakao.maps.services.Coords.WGS84
+                if(data.hx != 0 && data.hy != 0){
+                    var hlat
+                    var hlng
+    
+                    var geocoder = new kakao.maps.services.Geocoder(),
+                        tmX = data.hx,
+                        tmY = data.hy;
+    
+                    var callback = ((result, status) => {
+                      if (status === kakao.maps.services.Status.OK) {
+                          hlat = result[0].y;
+                          hlng = result[0].x;
+    
+                          this.makeHospitalMarker(new kakao.maps.LatLng(hlat, hlng), data.hname);
+                      }
+                    });
+    
+                    geocoder.transCoord(tmX, tmY, callback, {
+                      input_coord: kakao.maps.services.Coords.TM,
+                      output_coord: kakao.maps.services.Coords.WGS84
+                    });
+                }
             });
-                // console.log("변환 후")
-                // 마커 이미지의 이미지 크기 입니다
-                var imageSize = new kakao.maps.Size(24, 35); 
-                
-                // 마커 이미지를 생성합니다    
-                var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
-                
-                // console.log("마커생성전")
-                // 마커를 생성합니다
-                var marker = new kakao.maps.Marker({
-                    map : map,
-                    position: new kakao.maps.LatLng(hlng, hlat), // 마커를 표시할 위치
-                    title : positions[i].hname, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
-                    image : markerImage // 마커 이미지 
-                });
-                console.log(marker)
-            }
-        },
+    },
+    makeHospitalMarker(position, title){
+      var imageSrc = "https://pics.freeicons.io/uploads/icons/png/12147700431606252958-512.png"; 
+
+      // 마커 이미지의 이미지 크기 입니다
+      var imageSize = new kakao.maps.Size(24, 24); 
+      
+      // 마커 이미지를 생성합니다    
+      var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
+
+      // 마커를 생성합니다
+      new kakao.maps.Marker({
+          map : this.map,
+          position: position, // 마커를 표시할 위치
+          title : title, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
+          image : markerImage // 마커 이미지 
+      });
+    },
     getParkInfo(){
         this.listOn = false;
         this.$store.dispatch("getParkList").then(()=>{
-            // console.log("불러온 parkList : "+this.parkList)
             this.parkLocation()
             })   
     },
     parkLocation(){
-            var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
-                mapOption = { 
-                    center: new kakao.maps.LatLng(37.655264, 127.0771201), // 지도의 중심좌표
-                    level: 7 // 지도의 확대 레벨
-                };
+            var map = this.map;
 
-            var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
-            
             // 마커를 표시할 위치와 title 객체 배열입니다 
             var positions = this.parkList;
-            // console.log(positions[0])
 
             // 마커 이미지의 이미지 주소입니다
-            var imageSrc = "https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/markerStar.png"; 
+            var imageSrc = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi86pKpPAhlPA2EMqwfEeazNCGHclGBVDwOw&usqp=CAU"; 
                 
             for (var i = 0; i < positions.length; i ++) {
                 
                 // 마커 이미지의 이미지 크기 입니다
-                var imageSize = new kakao.maps.Size(24, 35); 
+                var imageSize = new kakao.maps.Size(34, 35); 
                 
                 //데이터 뒤에 붙는 애들 제거
                 var cutlng = positions[i].lng.substring(0,positions[i].lng.length-1);
@@ -508,13 +485,12 @@ export default {
                 var markerImage = new kakao.maps.MarkerImage(imageSrc, imageSize); 
                 
                 // 마커를 생성합니다
-                var marker = new kakao.maps.Marker({
+                new kakao.maps.Marker({
                     map : map,
                     position: new kakao.maps.LatLng(cutlng, positions[i].lat), // 마커를 표시할 위치
                     title : positions[i].parkname, // 마커의 타이틀, 마커에 마우스를 올리면 타이틀이 표시됩니다
                     image : markerImage // 마커 이미지 
                 });
-                console.log(marker)
             }
         }
   },
