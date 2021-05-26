@@ -194,9 +194,6 @@ export default new Vuex.Store({
         .then(() => {
           commit("addBoard", boardItem);
         })
-        .catch(() => {
-          alert("등록 중 에러가 발생했습니다.");
-        });
     },
     updateBoardForm({ commit }, boardItem) {
       commit("selectOne", boardItem);

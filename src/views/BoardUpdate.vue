@@ -74,6 +74,7 @@ export default {
         },
         update(){
             this.$store.dispatch("updateBoard",this.boardListItem)
+            this.$store.dispatch("getBoard",1)
             this.$router.push("/board")
         }
     },

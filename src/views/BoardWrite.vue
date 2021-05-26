@@ -62,6 +62,7 @@ export default {
                 btitle:'',
                 bwriter:'',
                 bcontent:'',
+                userid:'',
             }
         }
     },
@@ -71,6 +72,7 @@ export default {
         },
         register(){
             this.$store.dispatch("registerBoard",this.board)
+            this.$store.dispatch("getBoard",1)
             this.$router.push("/board")
         }
     }
