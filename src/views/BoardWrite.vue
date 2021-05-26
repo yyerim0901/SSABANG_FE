@@ -60,7 +60,7 @@ export default {
         return {
             board:{
                 btitle:'',
-                bwriter:'',
+                bwriter:this.userid,
                 bcontent:'',
             },
             userid:'',
