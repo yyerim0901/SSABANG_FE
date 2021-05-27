@@ -14,7 +14,7 @@
 ![image](/uploads/88d43bf47f0afba7558155b437f6a7ba/image.png)
 ![image](/uploads/8348d63bbeb1bed603d0efbc0fe49ce1/image.png)
 
-## ER Diagram
+## ER Diagram (MySQL)
 ![image](/uploads/71f32a5988e68160bc5d428623dea32d/image.png)
 
 
