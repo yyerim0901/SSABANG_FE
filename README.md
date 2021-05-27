@@ -1,4 +1,3 @@
-
  
 ### 회원관리
 
@@ -30,16 +29,22 @@
 ### map
 
 ##### 기본매물조회
+![image](/uploads/87a01c9064a2936bdd0aee494d3cb6a5/image.png)
 
 ##### 공원
+![image](/uploads/1608e62e562a02daa520ab1b6bd3f82d/image.png)
 
 ##### 병원
+![image](/uploads/5d64a838320afeafb16c0bb89ff983da/image.png)
 
 ##### 내 위치 확인(Geolocation API)
+![image](/uploads/52cf85406f81620b1cb64303d1b95bc5/image.png)
 
 ### 주택 용어집
+![주](/uploads/e16f56fcb3a9a37871733045f8b19f66/주.png)
 
 ### 뉴스
+![뉴스](/uploads/f845ed6f8d0e02a9197140f2592a5961/뉴스.png)
 
 
 1. 로그인, 로그아웃
