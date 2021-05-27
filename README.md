@@ -1,4 +1,10 @@
- 
+## Frontend(Vue.js) 
+![image](/uploads/56bf5c7d580ea0f21af79adfc3751a9f/image.png)
+
+## Backend(Spring boot)
+![image](/uploads/88d43bf47f0afba7558155b437f6a7ba/image.png)
+![image](/uploads/8348d63bbeb1bed603d0efbc0fe49ce1/image.png)
+
 
 ## 실행화면
 
