@@ -1,4 +1,3 @@
-
 ## MEMBER
 박민상, 김예림
 
@@ -10,6 +9,8 @@
 사람들이 쉽고 직관적으로 아파트 매매 정보를 조회할 수 있고,
 기존에 쓰던 매매 정보 사이트에서 느꼈던 불편한 점을 개선한 사이트를 만들고자 하였습니다.
 
+## 사용기술
+![image](/uploads/ce009128fbc6421c44f4914189b7445a/image.png)
 
 ## Frontend(Vue.js) 
 ![image](/uploads/56bf5c7d580ea0f21af79adfc3751a9f/image.png)
