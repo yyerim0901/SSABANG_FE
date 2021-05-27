@@ -86,7 +86,6 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    //로그인 시도
     login({ dispatch }, loginObj) {
       http
         .post("/member/login", loginObj)

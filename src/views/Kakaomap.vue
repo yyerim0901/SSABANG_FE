@@ -480,7 +480,8 @@ export default {
             var positions = this.parkList;
 
             // 마커 이미지의 이미지 주소입니다
-            var imageSrc = "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi86pKpPAhlPA2EMqwfEeazNCGHclGBVDwOw&usqp=CAU"; 
+            var imageSrc = 
+            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTi86pKpPAhlPA2EMqwfEeazNCGHclGBVDwOw&usqp=CAU"; 
                 
             for (var i = 0; i < positions.length; i ++) {
                 
@@ -528,7 +529,6 @@ export default {
                     
                 displayMarker(locPosition, message);
             }
-
             // 지도에 마커와 인포윈도우를 표시하는 함수입니다
             function displayMarker(locPosition, message) {
 
@@ -545,11 +545,9 @@ export default {
                 var infowindow = new kakao.maps.InfoWindow({
                     content : iwContent,
                     removable : iwRemoveable
-                });
-                
+                });               
                 // 인포윈도우를 마커위에 표시합니다 
                 infowindow.open(map, marker);
-                
                 // 지도 중심좌표를 접속위치로 변경합니다
                 map.setCenter(locPosition);      
             }    

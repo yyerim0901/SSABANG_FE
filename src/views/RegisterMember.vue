@@ -107,9 +107,10 @@ export default {
         }
     },
     mounted() {
-      let recaptchaScript = document.createElement('script')
-      recaptchaScript.setAttribute('src', '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js')
-      document.head.appendChild(recaptchaScript)
+        let recaptchaScript = document.createElement('script')
+        recaptchaScript.setAttribute('src', 
+        '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js')
+        document.head.appendChild(recaptchaScript)
     },
     methods: {
         register(){

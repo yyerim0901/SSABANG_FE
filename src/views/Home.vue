@@ -37,8 +37,8 @@
                 </v-cols>
               </v-row>
               <v-flex>
-                    <MARQUEE id="newsbar"></MARQUEE>
-                  </v-flex>
+                <MARQUEE id="newsbar"></MARQUEE>
+              </v-flex>
           </v-sheet>
         </v-flex>
       </v-layout>
