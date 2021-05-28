@@ -1,3 +1,6 @@
+## BACKEND
+link -> https://lab.ssafy.com/bam03196/0518_pairproject_vue
+
 ## MEMBER
 박민상, 김예림
 
