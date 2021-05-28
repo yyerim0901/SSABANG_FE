@@ -66,9 +66,9 @@
                                     <v-pagination
                                     v-model="page"
                                     @input="getNewWord"
-                                    :length="5"
-                                    prev-icon="mdi-menu-left"
-                                    next-icon="mdi-menu-right"
+                                    :per-page="5"
+                                    :length="this.getWordList.totpage"
+                                    :total-visible="7"
                                     ></v-pagination>
                                 </div>
                             </v-col>
@@ -83,7 +83,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
     name:"Word",
@@ -94,6 +94,9 @@ export default {
             startpage:'',
             endpage:'',
         }
+    },
+    watch:{
+        ...mapActions(['getWordList'])
     },
     computed: {
         ...mapGetters(['getWordList'])
