@@ -1,5 +1,5 @@
 ## BACKEND
-link -> https://lab.ssafy.com/bam03196/0518_pairproject_vue
+link -> https://github.com/yyerim0901/SSABANG_SSAFY_FinalProject_BackEnd.git
 
 ## MEMBER
 박민상, 김예림
